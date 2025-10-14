@@ -1,0 +1,556 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0;
+    padding: 15px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 横屏模式优化 */
+@media (orientation: landscape) and (max-height: 600px) {
+    .container {
+        padding: 10px;
+        flex-direction: column;
+    }
+    
+    .header {
+        order: 2;
+        margin-bottom: 10px;
+    }
+    
+    .main-content {
+        order: 1;
+        flex: 1;
+    }
+    
+    .status-bar {
+        order: 3;
+        margin-top: 10px;
+    }
+}
+
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px 25px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.mic-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+}
+
+.mic-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
+}
+
+.mic-button.recording {
+    background: linear-gradient(135deg, #ff4757, #c44569);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.settings {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.language-select {
+    padding: 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.language-select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.font-size-slider {
+    width: 100px;
+    height: 6px;
+    border-radius: 3px;
+    background: #e2e8f0;
+    outline: none;
+    cursor: pointer;
+}
+
+.font-size-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+}
+
+.font-size-label {
+    font-size: 14px;
+    color: #4a5568;
+    white-space: nowrap;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.translation-display {
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 15px;
+    padding: 20px;
+    flex: 1;
+    min-height: 300px;
+    overflow-y: auto;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 横屏模式下的翻译显示优化 */
+@media (orientation: landscape) and (max-height: 600px) {
+    .translation-display {
+        min-height: 200px;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .subtitle-container {
+        margin-bottom: 15px;
+        padding: 12px 15px;
+    }
+    
+    .original-text,
+    .translated-text {
+        font-size: calc(var(--font-size, 20px) * 0.85);
+        line-height: 1.4;
+    }
+}
+
+.subtitle-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+}
+
+.original-text {
+    color: #ffffff;
+    font-size: var(--font-size, 20px);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.translated-text {
+    color: #cbd5e0;
+    font-size: var(--font-size, 20px);
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.status-bar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 横屏模式下的状态栏优化 */
+@media (orientation: landscape) and (max-height: 600px) {
+    .status-bar {
+        padding: 8px 15px;
+        border-radius: 10px;
+    }
+    
+    .status-text {
+        font-size: 12px;
+    }
+    
+    .confidence-meter {
+        font-size: 12px;
+    }
+    
+    .confidence-bar {
+        width: 80px;
+        height: 6px;
+    }
+    
+    .header {
+        padding: 10px 20px;
+    }
+    
+    .title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .controls {
+        gap: 10px;
+    }
+    
+    .mic-button {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .language-select {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .font-size-slider {
+        width: 80px;
+        height: 4px;
+    }
+    
+    .font-size-label {
+        font-size: 12px;
+    }
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #48bb78;
+    animation: breathe 2s infinite;
+}
+
+.status-dot.recording {
+    background: #f56565;
+}
+
+.status-dot.processing {
+    background: #ed8936;
+}
+
+@keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.confidence-meter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.confidence-bar {
+    width: 100px;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #48bb78, #38a169);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .controls {
+        gap: 15px;
+    }
+    
+    .settings {
+        gap: 10px;
+    }
+    
+    .language-select {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    
+    .font-size-slider {
+        width: 80px;
+    }
+    
+    .translation-display {
+        padding: 20px;
+        min-height: 300px;
+    }
+    
+    .subtitle-container {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .original-text,
+    .translated-text {
+        font-size: calc(var(--font-size, 20px) * 0.9);
+    }
+    
+    .status-bar {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .confidence-meter {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .settings {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .language-select {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .original-text,
+    .translated-text {
+        font-size: calc(var(--font-size, 20px) * 0.8);
+    }
+}
+
+/* Safari特定优化 */
+@supports (-webkit-backdrop-filter: blur(10px)) {
+    .header,
+    .status-bar {
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .translation-display {
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .mic-button {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .language-select,
+    .font-size-slider {
+        min-height: 44px;
+    }
+}
+
+/* API密钥模态框样式 */
+.api-key-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content h3 {
+    margin: 0 0 15px 0;
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modal-content p {
+    margin: 0 0 20px 0;
+    color: #4a5568;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.api-key-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.api-key-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.save-btn,
+.cancel-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.cancel-btn {
+    background: #f7fafc;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+}
+
+.cancel-btn:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.api-key-note {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+    text-align: center;
+}

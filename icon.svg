@@ -1,0 +1,59 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="micGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ee5a24;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGradient)"/>
+  
+  <!-- 主要图标区域 -->
+  <g transform="translate(256,256)">
+    <!-- 麦克风 -->
+    <g transform="translate(0,-40)">
+      <ellipse cx="0" cy="-20" rx="25" ry="40" fill="url(#micGradient)"/>
+      <rect x="-25" y="20" width="50" height="30" rx="25" fill="url(#micGradient)"/>
+      <rect x="-3" y="50" width="6" height="40" fill="url(#micGradient)"/>
+      <rect x="-30" y="85" width="60" height="8" rx="4" fill="url(#micGradient)"/>
+    </g>
+    
+    <!-- 声波效果 -->
+    <g opacity="0.6">
+      <circle cx="-80" cy="-40" r="4" fill="white">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-100" cy="-20" r="3" fill="white">
+        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-90" cy="0" r="2" fill="white">
+        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      
+      <circle cx="80" cy="-40" r="4" fill="white">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="100" cy="-20" r="3" fill="white">
+        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.7s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="90" cy="0" r="2" fill="white">
+        <animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- 翻译符号 -->
+    <g transform="translate(0,80)">
+      <!-- 英文 A -->
+      <text x="-40" y="0" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="white" text-anchor="middle">A</text>
+      <!-- 箭头 -->
+      <path d="M -20,-5 L 0,0 L -20,5 M -25,0 L 0,0" stroke="white" stroke-width="3" fill="none"/>
+      <!-- 中文 中 -->
+      <text x="40" y="0" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="white" text-anchor="middle">中</text>
+    </g>
+  </g>
+</svg>
