@@ -52,7 +52,7 @@
 
 ## 在线体验
 
-访问 [CryptoTranslator](https://CRYptonym.github.io/CryptoTranslator/) 立即体验！
+访问 [CryptoTranslator](https://roy2EZ.github.io/CryptoTranslator/) 立即体验！
 
 ## 部署到GitHub Pages
 

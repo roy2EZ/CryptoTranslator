@@ -108,11 +108,17 @@ class CryptoTranslator {
         this.recognition.continuous = true;
         this.recognition.interimResults = true;
         this.recognition.lang = this.inputLanguage.value;
+        this.shouldContinueListening = false; // 新增：控制是否持续监听
 
         this.recognition.onstart = () => {
             this.isRecording = true;
-            this.updateStatus('正在监听...', 'recording');
-            this.micButton.classList.add('recording');
+            if (this.shouldContinueListening) {
+                this.updateStatus('持续监听中...', 'recording');
+                this.micButton.classList.add('continuous-recording');
+            } else {
+                this.updateStatus('正在监听...', 'recording');
+                this.micButton.classList.add('recording');
+            }
         };
 
         this.recognition.onresult = (event) => {
@@ -138,12 +144,37 @@ class CryptoTranslator {
 
         this.recognition.onerror = (event) => {
             console.error('语音识别错误:', event.error);
-            this.updateStatus(`识别错误: ${event.error}`, 'error');
-            this.stopRecording();
+            
+            // 如果是网络错误或其他可恢复错误，且用户希望持续监听，则重新启动
+            if (this.shouldContinueListening && 
+                (event.error === 'network' || event.error === 'audio-capture' || event.error === 'no-speech')) {
+                setTimeout(() => {
+                    if (this.shouldContinueListening) {
+                        this.restartRecognition();
+                    }
+                }, 1000);
+            } else {
+                this.updateStatus(`识别错误: ${event.error}`, 'error');
+                this.shouldContinueListening = false;
+                this.isRecording = false;
+                this.micButton.classList.remove('recording', 'continuous-recording');
+            }
         };
 
         this.recognition.onend = () => {
-            this.stopRecording();
+            this.isRecording = false;
+            
+            // 如果用户希望持续监听，自动重新开始
+            if (this.shouldContinueListening) {
+                setTimeout(() => {
+                    if (this.shouldContinueListening) {
+                        this.restartRecognition();
+                    }
+                }, 500); // 短暂延迟后重新开始
+            } else {
+                this.micButton.classList.remove('recording', 'continuous-recording');
+                this.updateStatus('准备就绪', 'ready');
+            }
         };
     }
 
@@ -283,22 +314,43 @@ class CryptoTranslator {
             return;
         }
 
+        this.shouldContinueListening = true; // 开启持续监听
+        
         try {
             this.recognition.start();
         } catch (error) {
             console.error('启动录音失败:', error);
             this.updateStatus('启动失败', 'error');
+            this.shouldContinueListening = false;
         }
     }
 
     stopRecording() {
+        this.shouldContinueListening = false; // 停止持续监听
+        
         if (this.recognition && this.isRecording) {
             this.recognition.stop();
         }
         
         this.isRecording = false;
-        this.micButton.classList.remove('recording');
+        this.micButton.classList.remove('recording', 'continuous-recording');
         this.updateStatus('准备就绪', 'ready');
+    }
+
+    restartRecognition() {
+        if (!this.shouldContinueListening) return;
+        
+        try {
+            this.recognition.start();
+        } catch (error) {
+            console.error('重新启动识别失败:', error);
+            // 如果启动失败，稍后再试
+            setTimeout(() => {
+                if (this.shouldContinueListening) {
+                    this.restartRecognition();
+                }
+            }, 2000);
+        }
     }
 
     updateStatus(text, type) {
