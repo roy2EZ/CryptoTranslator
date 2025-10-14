@@ -23,65 +23,127 @@
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1 class="title">CryptoTranslator</h1>
-            <div class="controls">
-                <button id="micButton" class="mic-button">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                    </svg>
+        <!-- 翻译显示区域 -->
+        <div class="translation-display">
+            <div id="originalText" class="original-text">点击开始按钮开始语音识别...</div>
+            <div id="translatedText" class="translated-text">Click start button to begin voice recognition...</div>
+        </div>
+
+        <!-- 控制面板 -->
+        <div class="control-panel">
+            <!-- 应用标题 -->
+            <div class="app-header">
+                <h1 class="app-title">🎙️ CryptoTranslator</h1>
+                <p class="app-subtitle">实时语音翻译助手</p>
+            </div>
+
+            <!-- 主要控制按钮 -->
+            <div class="main-controls">
+                <button id="startBtn" class="control-btn start-btn">
+                    <span class="btn-icon">🎤</span>
+                    <span class="btn-text">开始</span>
                 </button>
-                <div class="settings">
-                    <select id="inputLanguage" class="language-select">
-                        <option value="en-US">English</option>
-                        <option value="zh-CN">中文</option>
-                    </select>
-                    <select id="outputLanguage" class="language-select">
-                        <option value="zh-CN">中文简体</option>
-                        <option value="en">English</option>
-                    </select>
-                    <input type="range" id="fontSize" class="font-size-slider" min="12" max="32" value="20">
-                    <span class="font-size-label">字体大小: <span id="fontSizeValue">20</span></span>
-                </div>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div class="translation-display" id="translationDisplay">
-                <div class="subtitle-container">
-                    <div class="original-text" id="originalText">
-                        这里是翻译过来的汉语字幕，显示在这里
-                    </div>
-                    <div class="translated-text" id="translatedText">
-                        This is the English the app heard and it displayed here
-                    </div>
-                </div>
-                
-                <div class="subtitle-container">
-                    <div class="original-text" id="originalText2">
-                        这是听到的下一句话的汉语翻译，显示在这里
-                    </div>
-                    <div class="translated-text" id="translatedText2">
-                        This is the next English sentence the app heard and it displayed here and so on and so on and so on ...
-                    </div>
-                </div>
+                <button id="stopBtn" class="control-btn stop-btn" disabled>
+                    <span class="btn-icon">⏹️</span>
+                    <span class="btn-text">停止</span>
+                </button>
+                <button id="clearBtn" class="control-btn clear-btn">
+                    <span class="btn-icon">🗑️</span>
+                    <span class="btn-text">清除</span>
+                </button>
+                <button id="continuousBtn" class="control-btn continuous-btn">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">持续监听</span>
+                </button>
             </div>
 
-            <div class="status-bar">
-                <div class="status-indicator" id="statusIndicator">
-                    <span class="status-dot"></span>
-                    <span class="status-text">准备就绪</span>
-                </div>
-                <div class="confidence-meter">
-                    <span>识别准确度: </span>
-                    <div class="confidence-bar">
-                        <div class="confidence-fill" id="confidenceFill"></div>
+            <!-- 状态指示器 -->
+            <div class="status-section">
+                <div id="statusText" class="status-text">准备就绪</div>
+                <div id="listeningIndicator" class="listening-indicator"></div>
+            </div>
+
+            <!-- 设置区域 -->
+            <div class="settings-section">
+                <!-- 语言选择 -->
+                <div class="setting-group">
+                    <h3 class="setting-title">语言设置</h3>
+                    <div class="language-controls">
+                        <div class="language-item">
+                            <label for="sourceLanguage">源语言</label>
+                            <select id="sourceLanguage">
+                                <option value="auto">自动检测</option>
+                                <option value="zh-CN">中文</option>
+                                <option value="en">English</option>
+                                <option value="ja">日本語</option>
+                                <option value="ko">한국어</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="es">Español</option>
+                                <option value="ru">Русский</option>
+                            </select>
+                        </div>
+                        <div class="language-item">
+                            <label for="targetLanguage">目标语言</label>
+                            <select id="targetLanguage">
+                                <option value="zh-CN" selected>中文</option>
+                                <option value="en">English</option>
+                                <option value="ja">日本語</option>
+                                <option value="ko">한국어</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="es">Español</option>
+                                <option value="ru">Русский</option>
+                            </select>
+                        </div>
                     </div>
-                    <span id="confidenceValue">0%</span>
+                </div>
+
+                <!-- 字体大小控制 -->
+                <div class="setting-group">
+                    <h3 class="setting-title">显示设置</h3>
+                    <div class="font-size-control">
+                        <label for="fontSizeSlider">字体大小</label>
+                        <div class="slider-container">
+                            <input type="range" id="fontSizeSlider" class="font-size-slider" min="12" max="32" value="18">
+                            <span id="fontSizeValue" class="font-size-value">18px</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </div>
+
+    <!-- API密钥设置模态框 -->
+    <div id="apiKeyModal" class="api-key-modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🔑 设置翻译服务</h3>
+            <p>选择您的翻译服务提供商：</p>
+            
+            <div class="api-key-help">
+                <details>
+                    <summary>📝 如何获取OpenAI API密钥？</summary>
+                    <ol>
+                        <li>访问 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API密钥页面</a></li>
+                        <li>登录您的OpenAI账户</li>
+                        <li>点击"Create new secret key"</li>
+                        <li>复制生成的API密钥</li>
+                        <li>将密钥粘贴到下方输入框中</li>
+                    </ol>
+                </details>
+            </div>
+            
+            <input type="password" id="apiKeyInput" class="api-key-input" placeholder="请输入您的OpenAI API密钥 (sk-...)">
+            
+            <div class="modal-buttons">
+                <button id="saveApiKey" class="save-btn">使用OpenAI</button>
+                <button id="useGoogle" class="google-btn">使用Google翻译</button>
+            </div>
+            
+            <p class="api-key-note">
+                💡 API密钥将安全保存在您的浏览器本地存储中
+            </p>
+        </div>
     </div>
 
     <script src="script.js"></script>

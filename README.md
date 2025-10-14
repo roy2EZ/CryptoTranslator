@@ -59,13 +59,13 @@
 1. Fork或下载此项目
 2. 在GitHub仓库设置中启用GitHub Pages
 3. 选择主分支作为源
-4. 访问 `https://yourusername.github.io/CryptoTranslator`
+4. 访问 `https://roy2EZ.github.io/CryptoTranslator`
 
 ## 本地开发
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/CryptoTranslator.git
+git clone https://github.com/roy2EZ/CryptoTranslator.git
 
 # 进入项目目录
 cd CryptoTranslator
