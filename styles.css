@@ -1,3 +1,4 @@
+/* 移动端优先的紧凑设计 */
 * {
     margin: 0;
     padding: 0;
@@ -8,363 +9,291 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
+    padding: 8px;
     color: #333;
-    padding: 20px;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    min-height: calc(100vh - 40px);
+    gap: 6px;
+    min-height: calc(100vh - 16px);
 }
 
-/* 翻译显示区域 */
-.translation-display {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    flex: 1;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.original-text, .translated-text {
-    padding: 20px;
-    border-radius: 15px;
-    font-size: 18px;
-    line-height: 1.6;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.original-text {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #2d3748;
-    border-left: 4px solid #667eea;
-}
-
-.translated-text {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    color: #1565c0;
-    border-left: 4px solid #2196f3;
-}
-
-/* 控制面板 */
-.control-panel {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* 应用标题 */
+/* 应用标题 - 紧凑设计 */
 .app-header {
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    padding: 6px 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .app-title {
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
     color: #2d3748;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.app-subtitle {
-    font-size: 1rem;
-    color: #718096;
+/* 翻译显示区域 - 紧凑但清晰 */
+.translation-display {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.original-text, .translated-text {
+    padding: 8px;
+    border-radius: 8px;
+    line-height: 1.4;
+    font-size: 16px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.original-text {
+    background: #f7fafc;
+    border-left: 3px solid #667eea;
+    color: #2d3748;
+}
+
+.translated-text {
+    background: #edf2f7;
+    border-left: 3px solid #764ba2;
+    color: #2d3748;
+}
+
+/* 水平控制面板 */
+.horizontal-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+/* 1. 麦克风区域 */
+.mic-section {
+    flex-shrink: 0;
+}
+
+/* 2. 状态显示框 */
+.status-box {
+    flex-shrink: 0;
+    min-width: 120px;
+    max-width: 150px;
+}
+
+/* 3. 设置信息显示 */
+.settings-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+    color: #333;
+}
+
+.info-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #666;
+    min-width: 60px;
+}
+
+.info-value {
+    color: #333;
     font-weight: 400;
 }
 
-/* 主要控制按钮 */
-.main-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.control-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 10px;
+.mic-btn {
+    width: 60px;
+    height: 60px;
     border: none;
-    border-radius: 15px;
+    border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    min-height: 80px;
-    position: relative;
-    overflow: hidden;
-}
-
-.control-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.control-btn:hover::before {
-    opacity: 1;
-}
-
-.btn-icon {
-    font-size: 24px;
-    margin-bottom: 8px;
-    display: block;
-}
-
-.btn-text {
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.start-btn {
-    background: linear-gradient(135deg, #48bb78, #38a169);
+    background: linear-gradient(135deg, #9E9E9E, #757575);
     color: white;
-    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
-}
-
-.start-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
-}
-
-.stop-btn {
-    background: linear-gradient(135deg, #f56565, #e53e3e);
-    color: white;
-    box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
-}
-
-.stop-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
-}
-
-.stop-btn:disabled {
-    background: linear-gradient(135deg, #a0aec0, #718096);
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.clear-btn {
-    background: linear-gradient(135deg, #ed8936, #dd6b20);
-    color: white;
-    box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
-}
-
-.clear-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(237, 137, 54, 0.4);
-}
-
-.continuous-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.continuous-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.continuous-btn.active {
-    background: linear-gradient(135deg, #9f7aea, #805ad5);
-    box-shadow: 0 4px 15px rgba(159, 122, 234, 0.4);
-}
-
-/* 状态指示器 */
-.status-section {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding: 15px;
-    background: linear-gradient(135deg, #f7fafc, #edf2f7);
-    border-radius: 15px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    font-size: 24px;
+    position: relative;
+}
+
+.mic-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+}
+
+.mic-btn:active {
+    transform: scale(0.95);
+}
+
+.mic-btn.recording {
+    background: linear-gradient(135deg, #f56565, #e53e3e);
+    box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3);
+    animation: pulse-recording 1.5s infinite;
+}
+
+.mic-btn.recording:hover {
+    box-shadow: 0 4px 12px rgba(245, 101, 101, 0.4);
+}
+
+@keyframes pulse-recording {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(245, 101, 101, 0.3);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(245, 101, 101, 0.5);
+    }
+}
+
+/* 状态显示框 */
+.status-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    border-radius: 25px;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 120px;
 }
 
 .status-text {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 12px;
     color: #4a5568;
+    font-weight: 500;
 }
 
 .listening-indicator {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #a0aec0;
+    background: #cbd5e0;
     transition: all 0.3s ease;
 }
 
 .listening-indicator.active {
     background: #48bb78;
-    box-shadow: 0 0 10px rgba(72, 187, 120, 0.5);
     animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
-/* 设置区域 */
-.settings-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+/* 设置区域样式已在.settings-area中定义 */
 
-.setting-group {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    border-radius: 15px;
-    padding: 20px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
-}
-
-.setting-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.setting-title::before {
-    content: '';
-    width: 4px;
-    height: 16px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 2px;
-}
-
-/* 语言控制 */
-.language-controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.language-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.language-item label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #4a5568;
-}
-
-.language-item select {
-    padding: 12px 15px;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 14px;
-    background: white;
-    color: #2d3748;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.language-item select:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* 字体大小控制 */
 .font-size-control {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
 }
 
 .font-size-control label {
-    font-size: 14px;
     font-weight: 500;
-    color: #4a5568;
+    color: #333;
+    white-space: nowrap;
 }
 
 .slider-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 4px;
+    flex: 1;
 }
 
 .font-size-slider {
     flex: 1;
-    height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
+    height: 3px;
+    background: #ddd;
+    border-radius: 2px;
     outline: none;
-    cursor: pointer;
+    min-width: 50px;
     -webkit-appearance: none;
 }
 
 .font-size-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #4CAF50;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
-    transition: all 0.3s ease;
-}
-
-.font-size-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .font-size-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #667eea;
-    min-width: 45px;
+    font-size: 10px;
+    color: #666;
+    min-width: 20px;
     text-align: center;
-    background: rgba(102, 126, 234, 0.1);
-    padding: 6px 12px;
-    border-radius: 8px;
 }
 
-/* API密钥模态框 */
+.language-controls {
+    display: flex;
+    align-items: center;
+}
+
+.language-pair {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.language-item label {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.language-item select {
+    padding: 1px 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 10px;
+    background: white;
+    min-width: 55px;
+    color: #4a5568;
+}
+
+/* API密钥模态框 - 移动端优化 */
 .api-key-modal {
     position: fixed;
     top: 0;
@@ -372,233 +301,130 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: 16px;
 }
 
 .modal-content {
     background: white;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 500px;
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 100%;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .modal-content h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
     color: #2d3748;
-    margin-bottom: 15px;
-    text-align: center;
 }
 
 .modal-content p {
-    color: #718096;
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 13px;
+    color: #4a5568;
+    margin-bottom: 12px;
 }
 
 .api-key-help {
-    margin-bottom: 20px;
-}
-
-.api-key-help details {
-    background: #f7fafc;
-    border-radius: 10px;
-    padding: 15px;
-    border: 1px solid #e2e8f0;
+    margin-bottom: 12px;
 }
 
 .api-key-help summary {
+    font-size: 12px;
+    color: #667eea;
     cursor: pointer;
-    font-weight: 500;
-    color: #4a5568;
+    margin-bottom: 8px;
 }
 
 .api-key-help ol {
-    margin-top: 10px;
-    padding-left: 20px;
-}
-
-.api-key-help li {
-    margin-bottom: 5px;
-    color: #718096;
+    font-size: 11px;
+    color: #4a5568;
+    padding-left: 16px;
 }
 
 .api-key-input {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 14px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
-
-.api-key-input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 12px;
 }
 
 .modal-buttons {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
 .save-btn, .google-btn {
     flex: 1;
-    padding: 15px;
+    padding: 8px 12px;
     border: none;
-    border-radius: 10px;
-    font-size: 14px;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .save-btn {
-    background: linear-gradient(135deg, #48bb78, #38a169);
+    background: #667eea;
     color: white;
-}
-
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.3);
 }
 
 .google-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: #48bb78;
     color: white;
 }
 
-.google-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
-}
-
 .api-key-note {
-    font-size: 12px;
-    color: #a0aec0;
+    font-size: 11px;
+    color: #718096;
     text-align: center;
     margin: 0;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
+/* 响应式优化 */
+@media (max-width: 480px) {
     body {
-        padding: 10px;
+        padding: 4px;
     }
     
     .container {
-        gap: 15px;
-        min-height: calc(100vh - 20px);
-    }
-    
-    .translation-display {
-        padding: 20px;
-        min-height: 150px;
-    }
-    
-    .control-panel {
-        padding: 20px;
+        gap: 8px;
+        min-height: calc(100vh - 8px);
     }
     
     .app-title {
-        font-size: 1.5rem;
-    }
-    
-    .main-controls {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    
-    .control-btn {
-        min-height: 70px;
-        padding: 12px 8px;
-    }
-    
-    .btn-icon {
-        font-size: 20px;
-        margin-bottom: 6px;
-    }
-    
-    .btn-text {
-        font-size: 11px;
-    }
-    
-    .language-controls {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .modal-content {
-        padding: 20px;
-        margin: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .main-controls {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .control-btn {
-        min-height: 60px;
-        padding: 10px 6px;
-    }
-    
-    .btn-icon {
         font-size: 18px;
-        margin-bottom: 4px;
     }
     
-    .btn-text {
-        font-size: 10px;
+    .control-btn {
+        font-size: 12px;
+        padding: 6px 8px;
+        min-height: 32px;
+    }
+    
+    .original-text, .translated-text {
+        font-size: 14px;
+        min-height: 36px;
     }
 }
 
-/* 动画效果 */
-.fade-in {
-    animation: fadeIn 0.5s ease-in;
-}
-
-.fade-out {
-    animation: fadeOut 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(-10px); }
-}
-
-/* 滚动条样式 */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.3);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 126, 234, 0.5);
+@media (max-height: 600px) {
+    .translation-display {
+        min-height: 80px;
+    }
+    
+    .original-text, .translated-text {
+        min-height: 32px;
+        font-size: 14px;
+    }
 }

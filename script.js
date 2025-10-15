@@ -2,7 +2,6 @@ class CryptoTranslator {
     constructor() {
         this.recognition = null;
         this.isRecording = false;
-        this.isContinuous = false;
         this.apiKey = '';
         this.subtitleHistory = [];
         this.maxHistoryLength = 10;
@@ -10,25 +9,30 @@ class CryptoTranslator {
         this.initializeElements();
         this.initializeSpeechRecognition();
         this.bindEvents();
-        this.requestApiKey();
     }
 
     initializeElements() {
-        this.startBtn = document.getElementById('startBtn');
-        this.stopBtn = document.getElementById('stopBtn');
-        this.clearBtn = document.getElementById('clearBtn');
-        this.continuousBtn = document.getElementById('continuousBtn');
-        this.statusText = document.getElementById('statusText');
-        this.listeningIndicator = document.getElementById('listeningIndicator');
-        this.translationDisplay = document.getElementById('translationDisplay');
-        this.sourceLanguage = document.getElementById('sourceLanguage');
-        this.targetLanguage = document.getElementById('targetLanguage');
-        this.fontSizeSlider = document.getElementById('fontSizeSlider');
-        this.fontSizeValue = document.getElementById('fontSizeValue');
-        
-        // 获取翻译显示元素
-        this.originalText = document.getElementById('originalText');
-        this.translatedText = document.getElementById('translatedText');
+        try {
+            this.micBtn = document.getElementById('micBtn');
+            this.statusText = document.getElementById('statusText');
+            this.listeningIndicator = document.getElementById('listeningIndicator');
+            this.translationDisplay = document.getElementById('translationDisplay');
+            this.sourceLanguage = document.getElementById('sourceLanguage');
+            this.targetLanguage = document.getElementById('targetLanguage');
+            this.fontSizeSlider = document.getElementById('fontSizeSlider');
+            this.fontSizeValue = document.getElementById('fontSizeValue');
+            
+            // 获取翻译显示元素
+            this.originalText = document.getElementById('originalText');
+            this.translatedText = document.getElementById('translatedText');
+            
+            // 获取信息显示元素
+            this.inputInfo = document.getElementById('inputInfo');
+            this.outputInfo = document.getElementById('outputInfo');
+            this.fontSizeInfo = document.getElementById('fontSizeInfo');
+        } catch (error) {
+            console.error('初始化元素时出错:', error);
+        }
     }
 
     requestApiKey() {
@@ -43,74 +47,62 @@ class CryptoTranslator {
     }
 
     showApiKeyModal() {
-        // 创建API密钥设置模态框
-        const modal = document.createElement('div');
-        modal.className = 'api-key-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>🔑 设置OpenAI API密钥</h3>
-                <p>请输入您的OpenAI API密钥以使用高质量翻译功能：</p>
-                <input type="password" id="apiKeyInput" placeholder="sk-proj-..." class="api-key-input">
-                <div class="modal-buttons">
-                    <button id="saveApiKey" class="save-btn">保存密钥</button>
-                    <button id="useGoogle" class="google-btn">使用Google翻译</button>
-                </div>
-                <div class="api-key-help">
-                    <details>
-                        <summary>如何获取API密钥？</summary>
-                        <ol>
-                            <li>访问 <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Keys</a></li>
-                            <li>登录您的OpenAI账号</li>
-                            <li>点击"Create new secret key"</li>
-                            <li>复制生成的密钥（以sk-开头）</li>
-                        </ol>
-                    </details>
-                </div>
-                <div class="api-key-note">
-                    <small>🔒 您的API密钥将安全地存储在本地浏览器中，不会上传到服务器</small>
-                </div>
-            </div>
-        `;
+        // 使用现有的API密钥模态框
+        const modal = document.getElementById('apiKeyModal');
+        if (!modal) {
+            console.error('API密钥模态框未找到');
+            return;
+        }
         
-        document.body.appendChild(modal);
+        modal.style.display = 'flex';
         
-        const apiKeyInput = modal.querySelector('#apiKeyInput');
-        const saveBtn = modal.querySelector('#saveApiKey');
-        const googleBtn = modal.querySelector('#useGoogle');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveBtn = document.getElementById('saveApiKey');
+        const googleBtn = document.getElementById('useGoogle');
         
-        apiKeyInput.focus();
+        if (apiKeyInput) {
+            apiKeyInput.focus();
+        }
         
-        saveBtn.addEventListener('click', () => {
-            const apiKey = apiKeyInput.value.trim();
-            if (apiKey && apiKey.startsWith('sk-')) {
-                this.apiKey = apiKey;
-                localStorage.setItem('openai_api_key', apiKey);
-                localStorage.setItem('translation_provider', 'openai');
-                document.body.removeChild(modal);
-                this.updateStatus('OpenAI已就绪', 'ready');
-            } else {
-                apiKeyInput.style.borderColor = '#f56565';
-                alert('请输入有效的OpenAI API密钥（以sk-开头）');
-            }
-        });
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const apiKey = apiKeyInput.value.trim();
+                if (apiKey && apiKey.startsWith('sk-')) {
+                    this.apiKey = apiKey;
+                    localStorage.setItem('openai_api_key', apiKey);
+                    localStorage.setItem('translation_provider', 'openai');
+                    modal.style.display = 'none';
+                    this.updateStatus('OpenAI已就绪', 'ready');
+                } else {
+                    apiKeyInput.style.borderColor = '#f56565';
+                    alert('请输入有效的OpenAI API密钥（以sk-开头）');
+                }
+            });
+        }
         
-        googleBtn.addEventListener('click', () => {
-            localStorage.setItem('translation_provider', 'google');
-            document.body.removeChild(modal);
-            this.updateStatus('Google翻译已就绪', 'ready');
-        });
+        if (googleBtn) {
+            googleBtn.addEventListener('click', () => {
+                localStorage.setItem('translation_provider', 'google');
+                modal.style.display = 'none';
+                this.updateStatus('Google翻译已就绪', 'ready');
+            });
+        }
         
         // 按Enter键保存
-        apiKeyInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                saveBtn.click();
-            }
-        });
+        if (apiKeyInput) {
+            apiKeyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    saveBtn.click();
+                }
+            });
+        }
         
         // 点击模态框外部关闭
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                googleBtn.click();
+                if (googleBtn) {
+                    googleBtn.click();
+                }
             }
         });
     }
@@ -314,27 +306,9 @@ class CryptoTranslator {
     }
 
     bindEvents() {
-        if (this.startBtn) {
-            this.startBtn.addEventListener('click', () => {
-                this.startRecording();
-            });
-        }
-
-        if (this.stopBtn) {
-            this.stopBtn.addEventListener('click', () => {
-                this.stopRecording();
-            });
-        }
-
-        if (this.clearBtn) {
-            this.clearBtn.addEventListener('click', () => {
-                this.clearHistory();
-            });
-        }
-
-        if (this.continuousBtn) {
-            this.continuousBtn.addEventListener('click', () => {
-                this.toggleContinuousMode();
+        if (this.micBtn) {
+            this.micBtn.addEventListener('click', () => {
+                this.toggleRecording();
             });
         }
 
@@ -343,6 +317,15 @@ class CryptoTranslator {
                 if (this.recognition) {
                     this.recognition.lang = this.sourceLanguage.value === 'auto' ? 'zh-CN' : this.sourceLanguage.value;
                 }
+                // 更新显示信息
+                this.updateDisplayInfo();
+            });
+        }
+
+        if (this.targetLanguage) {
+            this.targetLanguage.addEventListener('change', () => {
+                // 更新显示信息
+                this.updateDisplayInfo();
             });
         }
 
@@ -351,8 +334,13 @@ class CryptoTranslator {
                 const size = this.fontSizeSlider.value;
                 this.fontSizeValue.textContent = `${size}px`;
                 document.documentElement.style.setProperty('--font-size', `${size}px`);
+                // 更新显示信息
+                this.updateDisplayInfo();
             });
         }
+
+        // 初始化显示信息
+        this.updateDisplayInfo();
 
         // 清除API密钥的快捷键
         document.addEventListener('keydown', (e) => {
@@ -371,22 +359,13 @@ class CryptoTranslator {
         });
     }
 
-    toggleContinuousMode() {
-        this.isContinuous = !this.isContinuous;
-        
-        if (this.continuousBtn) {
-            this.continuousBtn.classList.toggle('active', this.isContinuous);
-            
-            const btnText = this.continuousBtn.querySelector('.btn-text');
-            if (btnText) {
-                if (this.isContinuous) {
-                    btnText.textContent = '停止监听';
-                    this.startRecording();
-                } else {
-                    btnText.textContent = '持续监听';
-                    this.stopRecording();
-                }
-            }
+
+
+    toggleRecording() {
+        if (this.isRecording) {
+            this.stopRecording();
+        } else {
+            this.startRecording();
         }
     }
 
@@ -397,8 +376,7 @@ class CryptoTranslator {
         }
 
         this.isRecording = true;
-        this.startBtn.disabled = true;
-        this.stopBtn.disabled = false;
+        this.micBtn.classList.add('recording');
         this.listeningIndicator.classList.add('active');
         this.shouldContinueListening = true; // 开启持续监听
         this.updateStatus('正在录音...', 'recording');
@@ -410,8 +388,7 @@ class CryptoTranslator {
             this.updateStatus('启动失败', 'error');
             this.shouldContinueListening = false;
             this.isRecording = false;
-            this.startBtn.disabled = false;
-            this.stopBtn.disabled = true;
+            this.micBtn.classList.remove('recording');
             this.listeningIndicator.classList.remove('active');
         }
     }
@@ -424,8 +401,7 @@ class CryptoTranslator {
         }
         
         this.isRecording = false;
-        this.startBtn.disabled = false;
-        this.stopBtn.disabled = true;
+        this.micBtn.classList.remove('recording');
         this.listeningIndicator.classList.remove('active');
         this.updateStatus('准备就绪', 'ready');
     }
@@ -447,28 +423,58 @@ class CryptoTranslator {
     }
 
     updateStatus(text, type) {
-        if (this.statusText) {
-            this.statusText.textContent = text;
-        }
-        if (this.listeningIndicator) {
-            this.listeningIndicator.className = `listening-indicator ${type === 'recording' ? 'active' : ''}`;
+        try {
+            if (this.statusText) {
+                this.statusText.textContent = text;
+            }
+            if (this.listeningIndicator) {
+                this.listeningIndicator.className = `listening-indicator ${type === 'recording' ? 'active' : ''}`;
+            }
+        } catch (error) {
+            console.error('更新状态时出错:', error);
         }
     }
 
     clearHistory() {
         this.subtitleHistory = [];
-        this.translationDisplay.innerHTML = `
-            <div class="subtitle-container">
-                <div class="original-text">历史记录已清除</div>
-                <div class="translated-text">History cleared</div>
-            </div>
-        `;
+        if (this.originalText) {
+            this.originalText.textContent = '点击开始按钮开始语音识别...';
+        }
+        if (this.translatedText) {
+            this.translatedText.textContent = 'Click start button to begin voice recognition...';
+        }
+        this.updateStatus('历史记录已清除', 'ready');
+    }
+
+    updateDisplayInfo() {
+        try {
+            // 更新输入语言显示
+            if (this.inputInfo && this.sourceLanguage) {
+                const sourceValue = this.sourceLanguage.value;
+                const sourceText = this.sourceLanguage.options[this.sourceLanguage.selectedIndex].text;
+                this.inputInfo.textContent = sourceText;
+            }
+
+            // 更新输出语言显示
+            if (this.outputInfo && this.targetLanguage) {
+                const targetText = this.targetLanguage.options[this.targetLanguage.selectedIndex].text;
+                this.outputInfo.textContent = targetText;
+            }
+
+            // 更新字体大小显示
+            if (this.fontSizeInfo && this.fontSizeSlider) {
+                this.fontSizeInfo.textContent = `${this.fontSizeSlider.value}px`;
+            }
+        } catch (error) {
+            console.error('更新显示信息时出错:', error);
+        }
     }
 }
 
 // 初始化应用
 document.addEventListener('DOMContentLoaded', () => {
-    new CryptoTranslator();
+    const translator = new CryptoTranslator();
+    translator.requestApiKey();
 });
 
 // PWA支持
